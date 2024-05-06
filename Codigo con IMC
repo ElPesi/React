@@ -1,0 +1,71 @@
+import React, { useState } from 'react';
+import './App.css';
+
+function App() {
+  
+  const [pesoInput, setPesoInput] = useState('');
+  const [alturaInput, setAlturaInput] = useState('');
+
+  const manejarCambioPeso = (e) => {
+    setPesoInput(e.target.value);
+  };
+
+  const manejarCambioAltura = (e) => {
+    setAlturaInput(e.target.value);
+  };
+
+  const calcularIMC = () => {
+    const peso = parseFloat(pesoInput);
+    const altura = parseFloat(alturaInput) / 100; // Convertir la altura a metros
+
+    let resultado = '';
+
+    if (isNaN(peso) || isNaN(altura)) {
+      resultado = 'Por favor, introduce valores válidos.';
+    } else {
+      const imc = peso / (altura * altura);
+      resultado = 'Tu IMC es ' + imc.toFixed(2) + '. ';
+
+      if (imc < 18.5) {
+        resultado += 'Estás bajo de peso.';
+      } else if (imc >= 18.5 && imc < 25) {
+        resultado += 'Tienes un peso saludable.';
+      } else if (imc >= 25 && imc < 30) {
+        resultado += 'Tienes sobrepeso.';
+      } else {
+        resultado += 'Tienes obesidad.';
+      }
+    }
+
+    return resultado;
+  };
+
+  return (
+    <div className="App">
+      <main className="App-header">
+        <h1>Calculadora de Índice de Masa Corporal (IMC)</h1>
+        <label htmlFor="peso">Peso (kg):</label>
+        <input
+          type="number"
+          id="peso"
+          value={pesoInput}
+          onChange={manejarCambioPeso}
+        />
+
+        <label htmlFor="altura">Altura (cm):</label>
+        <input
+          type="number"
+          id="altura"
+          value={alturaInput}
+          onChange={manejarCambioAltura}
+        />
+
+        <button onClick={calcularIMC}>Calcular IMC</button>
+
+        <p id="resultado">{calcularIMC()}</p>
+      </main>
+    </div>
+  );
+}
+
+export default App;
